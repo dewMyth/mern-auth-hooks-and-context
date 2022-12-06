@@ -25,6 +25,13 @@ export const useLogin = () => {
 
     console.log("json =>", json);
 
+    const { token, user } = json;
+
+    const payload = {
+      token,
+      user,
+    };
+
     if (!response.ok) {
       setError(json.msg);
       setIsLoading(false);
@@ -32,7 +39,8 @@ export const useLogin = () => {
     }
     if (response.ok) {
       //save the user to the local storage
-      localStorage.setItem("user", JSON.stringify(json.token));
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", JSON.stringify(token));
 
       //update the auth context
       dispatch({ type: "LOGIN", payload: json.user });
