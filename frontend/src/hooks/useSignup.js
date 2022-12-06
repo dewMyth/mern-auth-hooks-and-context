@@ -31,7 +31,7 @@ export const useSignup = () => {
     }
     if (response.ok) {
       //save the user to the local storage
-      localStorage.setItem("user", JSON.stringify(json.token));
+      // localStorage.setItem("user", JSON.stringify(json.token)); => useless in register, since I did not ad jwt for register
 
       //update the auth context
       dispatch({ type: "LOGIN", payload: json.user });
