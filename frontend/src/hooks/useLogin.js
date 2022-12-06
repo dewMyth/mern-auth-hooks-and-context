@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
-export const useSignup = () => {
+export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const { dispatch } = useAuthContext();
 
-  const signup = async (email, password) => {
+  const login = async (email, password) => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch("/api/users/register", {
+    const response = await fetch("/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,6 +22,7 @@ export const useSignup = () => {
     console.log("response =>", response);
 
     const json = await response.json();
+
     console.log("json =>", json);
 
     if (!response.ok) {
@@ -31,15 +32,14 @@ export const useSignup = () => {
     }
     if (response.ok) {
       //save the user to the local storage
-      // localStorage.setItem("user", JSON.stringify(json.token)); => useless in register, since I did not ad jwt for register
+      localStorage.setItem("user", JSON.stringify(json.token));
 
       //update the auth context
-      // dispatch({ type: "LOGIN", payload: json.user });
-      window.location.href = "/login";
+      dispatch({ type: "LOGIN", payload: json.user });
 
       setIsLoading(false);
     }
   };
 
-  return { signup, error, isLoading };
+  return { login, error, isLoading };
 };
